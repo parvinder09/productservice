@@ -2,6 +2,7 @@ package com.capstone.productservice.service;
 
 import com.capstone.productservice.configs.RestTemplateBean;
 import com.capstone.productservice.dto.ProductDTO;
+import com.capstone.productservice.exceptions.InvalidProductException;
 import com.capstone.productservice.model.Category;
 import com.capstone.productservice.model.Product;
 import org.springframework.core.ParameterizedTypeReference;
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Objects.nonNull;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService{
                 "https://fakestoreapi.com/products",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<ProductDTO[]>() {}
+                new ParameterizedTypeReference<>() {}
         );
         ProductDTO[] productDTOs = responseEntity.getBody();
         HttpHeaders headers = responseEntity.getHeaders();
@@ -43,10 +43,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProductById(long id) {
+    public Product getProductById(long id) throws InvalidProductException {
         ProductDTO productDTO = restTemplate.getRestTemplate().getForObject("https://fakestoreapi.com/products/"+id, ProductDTO.class);
         if(productDTO == null){
-            return new Product();
+            throw new InvalidProductException("Product not found");
         }
         return convertProductDTOToProduct(productDTO);
     }
