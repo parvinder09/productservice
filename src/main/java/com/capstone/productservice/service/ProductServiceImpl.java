@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,7 +80,7 @@ public class ProductServiceImpl implements ProductService{
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
         product.setImage(productDTO.getImage());
-        product.setCategory(new Category(1, productDTO.getCategory()));
+        product.setCategory(new Category(1,productDTO.getCategory()));
         return product;
     }
 }

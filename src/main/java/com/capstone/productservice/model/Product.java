@@ -1,21 +1,22 @@
 package com.capstone.productservice.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
     String title;
     String description;
     double price;
    String image;
-   Category category;
+    @OneToOne
+    Category category;
 
 }
